@@ -1,0 +1,64 @@
+\documentclass[a5paper,10pt]{extreport}
+\usepackage[english,russian]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{latexsym,mathrsfs}
+\usepackage{stmaryrd, enumitem}
+\usepackage{amsthm,amsfonts,amssymb,amsmath}
+\usepackage{geometry}
+\usepackage{tempora}
+\usepackage[pdftex]{graphicx}
+
+\geometry{top=17mm}  \geometry{bottom=20mm}
+\geometry{left=17mm} \geometry{right=17mm}
+\linespread{1.1}
+\parindent=5mm
+
+\def\udcK#1{\noindent УДК~{#1}}
+\def\titleK#1{\begin{center}{\textbf {#1}}\end{center}}
+\def\authorK#1{\begin{center}{#1}\end{center}}
+\def\advisorK#1{Научный руководитель -- {#1}}
+
+\newenvironment{abstractK}{}{~\newline\parindent=5mm\rule{5.5cm}{0.3pt}}
+\newenvironment{bibliographyK}{\footnotesize \begin{enumerate}[label={[\arabic*]}]}{\end{enumerate}}
+
+\newtheorem{lemma}{Лемма}
+\newtheorem{theorem}{Теорема}
+\newtheorem{corollary}{Следствие}
+\newtheorem{proposition}{Предложение}
+\theoremstyle{definition}
+\newtheorem{definition}{Определение}
+\theoremstyle{definition}
+\newtheorem{question}{Вопрос}
+\theoremstyle{definition}
+\newtheorem{conjecture}{Гипотеза}
+
+%ВАЖНО: Не менять и не добавлять ничего выше этой строки.
+%Изменения вносить только внутри окружения \begin{document}\end{document}
+\begin{document}
+%УДК
+\udcK{004.45}
+%Название доклада
+\titleK{Эффективная реализация сопрограмм в \\управляемой среде исполнения}
+%Информация об авторе
+\authorK{Е. В. Пантелеев\\
+Новосибирский государственный университет}
+
+%Текст тезисов доклада
+%Внутри текста можно использовать стандартные команды TeX а также следующие определенные окружения
+%Теорема - \begin{theorem}\end{theorem}
+%Лемма - \begin{lemma}\end{lemma}
+%Следствие - \begin{corollary}\end{corollary}
+%Предложение - \begin{proposition}\end{proposition}
+%Определение - \begin{definition}\end{definition}
+%Вопрос - \begin{question}\end{question}
+%Гипотеза - \begin{conjecture}\end{conjecture}
+\begin{abstractK}
+Сопрограммы (или корутины) с точки зрения пользователя языка программирования - это потоки, которые управляются средой исполнения языка или самим программистом. Преимущество корутин перед потоками операционной системы заключается в потреблении меньшего объема системных ресурсов – адресного пространства и памяти. Кроме того, переключение контекста корутины дешевле, чем потока, поскольку осуществляется средой исполнения языка. 
+\par
+В наше время усилился запрос разработчиков многопоточных веб-сервисов на поддержку корутин в языках программирования, поскольку они позволяют упростить и ускорить разработку приложения из-за своих преимуществ, перечисленных выше. Потому сопрограммы были реализованы в популярных языках: Go, Kotlin, C\# и других. К сожалению, сейчас не существует нативного решения в языке Java.
+Целю работы является создание работающего прототипа корутин в языке Java. Работа проводится на базе виртуальной машины Excelsior Research Virtual Machine. 
+\end{abstractK}
+
+%Научный руководитель
+\advisorK{канд. физ.-мат. наук, доц. М. А. Бульонков.}
+\end{document}
