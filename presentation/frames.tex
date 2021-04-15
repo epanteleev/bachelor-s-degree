@@ -3,6 +3,23 @@
 	\titlepage
 \end{frame}
 
+\begin{frame}	
+	\begin{figure}[h!]
+		\centering
+		\begin{subfigure}[b]{0.4\linewidth}
+			\includegraphics[width=\linewidth]{images/server.jpg}
+			\caption{Серверы.}
+		\end{subfigure}
+		\hfill
+		\begin{subfigure}[b]{0.4\linewidth}
+			\includegraphics[width=\linewidth]{images/accelerator.jpg}
+			\caption{Ускорители.}
+		\end{subfigure}
+	\end{figure}
+	\par
+	Существует множество задач, когда необходимо обрабатывать много независимых событий.
+\end{frame}
+
 \begin{frame}
 	\frametitle{Сопрограммы}
 	\begin{itemize}
@@ -16,8 +33,8 @@
 	\frametitle{Ключевые отличия от потоков ОС}
 	Плюсы сопрограмм
 	\begin{itemize}
-		\item Переключение контекста сопрограммы происходит в пользовательском пространстве OC.
-		\item Как правило меньший размер стека.
+		\item Переключение контекста сопрограммы требует меньше накладных расходов, чем потока.
+		\item Как правило меньший размер стека, а значит, потребление памяти так же меньше.
 	\end{itemize}
 
 	Минусы
@@ -26,17 +43,31 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}
-	\frametitle{Поддержка в языках программирования}
-	\begin{itemize}
-	\item[] \includegraphics[scale=0.7]{images/go.jpg} Go
-	\item[] \includegraphics[scale=0.7]{images/cpp.jpg} C++20
-	\item[] \includegraphics[scale=0.46]{images/csharp.jpg} C\#
-	\end{itemize}
+\begin{frame}{Поддержка в языках программирования}
+	
+	\begin{figure}
+	\centering
+	\hfill
+	\begin{subfigure}[b]{0.30\linewidth}
+		\includegraphics[width=\linewidth, scale=0.35]{images/cpp.jpg}
+		\caption{С++20.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.24\linewidth}
+		\includegraphics[width=\linewidth, scale=0.24]{images/csharp.jpg} 
+		\caption{С\#.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.35\linewidth}
+		\includegraphics[width=\linewidth, scale=0.35]{images/go.jpg}
+		\caption{Go.}
+	\end{subfigure}
+
+	\end{figure}
 \end{frame}
 
 \begin{frame}
-	\includegraphics[scale=0.7]{images/loom.jpg}
+	\includegraphics[scale=0.5]{images/loom.jpg}
 	
 	\begin{itemize}
 	\item	Project Loom – проект на базе OpenJDK, целью которого является разработка сопрограмм для языка Java. 
@@ -132,8 +163,9 @@
 
 \begin{frame}{Применение сопрограмм.}
 	\begin{itemize}
-	\item Реализация бесконечных списков, итераторов, генераторов.
-	\item Написание асинхронного и неблокирующего кода (та причина, из-за которой сопрограммы стали востребованы сейчас)
+		\item Реализация бесконечных списков, итераторов, генераторов.
+		\item Написание асинхронного и неблокирующего кода.
+		\item Обработка независимых друг от друга событий.
 	\end{itemize}
 \end{frame}
 
