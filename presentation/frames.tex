@@ -13,10 +13,6 @@
 			\caption{Серверы.}
 		\end{subfigure}
 		\hfill
-		\begin{subfigure}[b]{0.4\linewidth}
-			\includegraphics[width=\linewidth]{images/accelerator.jpg}
-			\caption{Ускорители.}
-		\end{subfigure}
 	\end{figure}
 	\par
 	Существует множество задач, в которых необходимо обрабатывать много независимых событий.
@@ -64,7 +60,7 @@
 \end{frame}
 
 \begin{frame}
-	\includegraphics[scale=0.5]{images/loom.jpg}
+	\includegraphics[scale=0.4]{images/loom.jpg}
 	\begin{itemize}
 		\item Project Loom – проект на базе OpenJDK, целью которого является разработка сопрограмм для языка Java. 
 		\item На данный момент уже доступна ранняя версия проекта.
@@ -121,19 +117,20 @@
 	\par Для измерения используется только одно ядро ЦП.
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
-		\begin{tabular}{|c|c|c|c|c|c|}
-			\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Число переключений, 1/сек.}    \\
+		\textit{\begin{tabular}{|c|c|c|c|c|c|}
+			\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Число переключений, тыс./сек.}    \\
 			\cline{2-3}    & Сопрограммы              & Потоки                    \\
-			\hline 100     & 1'246'756 $\pm$ 12'961 & 2'306'346 $\pm$ 49'831  \\
-			\hline 1'000   & 1'199'142 $\pm$ 11'803 & 2'300'279 $\pm$ 27'180  \\
-			\hline 5'000   & 1'075'559 $\pm$ 59'328 & 1'553'872 $\pm$ 36'832  \\
-			\hline 10'000  & 1'016'802 $\pm$ 9'990  & 1'015'976 $\pm$ 29'096  \\ 
-			\hline 20'000  & 916'809 $\pm$ 8'354    & 753'123 $\pm$ 28'248    \\ 
-			\hline 30'000  & 858'994 $\pm$ 4'307    & 555'720 $\pm$ 16'102    \\ 
-			\hline 40'000  & 790'015 $\pm$ 8'033    & 436'529 $\pm$ 12'334    \\ 
-			\hline 50'000  & 756'523 $\pm$ 8'232    & 361'088 $\pm$ 7'853     \\ 
+			\hline 100     & \numprint{1247} $\pm$ 13 & \numprint{2306} $\pm$ 50  \\
+			\hline 1'000   & \numprint{1199} $\pm$ 12 & \numprint{2300} $\pm$ 27  \\
+			\hline 5'000   & \numprint{1076} $\pm$ 59 & \numprint{1554} $\pm$ 37  \\
+			\hline 10'000  & \numprint{1017} $\pm$ 10 & \numprint{1016} $\pm$ 29  \\ 
+			\hline 20'000  & 917 $\pm$ 8    & 753   $\pm$ 28  \\ 
+			\hline 30'000  & 859 $\pm$ 4    & 556   $\pm$ 16  \\ 
+			\hline 40'000  & 790 $\pm$ 8    & 436   $\pm$ 12  \\ 
+			\hline 50'000  & 756 $\pm$ 8    & 361   $\pm$ 8   \\ 
 			\hline 
 		\end{tabular}
+	}
 	\end{table}
 	
 \end{frame}
@@ -145,27 +142,44 @@
 	
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
-		\begin{tabular}{|c|c|c|c|c|c|}
-			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, 1/сек.}                        \\
-			\cline{2-4}     & HuaweiJDK                & OpenJDK("Loom Project")     & Go                         \\
-			\hline 100      & 1'246'756 $\pm$ 12'961 & 1'900'009 $\pm$ 19'732    & 18'187'799 $\pm$ 219'367 \\
-			\hline 1'000    & 1'199'142 $\pm$ 11'803 & 1'775'239 $\pm$ 20'491    & 17'934'078 $\pm$ 332'778 \\
-			\hline 5'000    & 1'075'559 $\pm$ 59'328 & 1'703'631 $\pm$ 30'498    & 12'892'417 $\pm$ 339'410 \\  
-			\hline 10'000   & 1'016'802 $\pm$ 9'990  & 1'924'971 $\pm$ 234'982   & 8'307'791 $\pm$ 79'652   \\  
-			\hline 20'000   & 916'809 $\pm$ 8'354    & 1'863'342 $\pm$ 217'482   & 7'045'984 $\pm$ 72'584   \\ 
-			\hline 30'000   & 858'994 $\pm$ 4'307    & 1'772'720 $\pm$ 182'023   & 6'391'629 $\pm$ 94'370   \\ 
-			\hline 40'000   & 790'015 $\pm$ 8'033    & 1'606'534 $\pm$ 194'728 	 & 5'790'831 $\pm$ 66'910	  \\ 
-			\hline 50'000   & 756'523 $\pm$ 8'232    & 1'503'444 $\pm$ 157'186   & 5'292'780 $\pm$ 121'844  \\  
+		\textit{\begin{tabular}{|c|c|c|c|c|c|}
+			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, тыс./сек.}                  \\
+			\cline{2-4}     & HuaweiJDK                & OpenJDK("Loom Project")     & Go                   \\
+			\hline 100      & \numprint{1246} $\pm$ 13 & \numprint{1900} $\pm$ 20    & \numprint{18187} $\pm$ 219 \\
+			\hline \numprint{1000}    & \numprint{1199} $\pm$ 12 & \numprint{1775} $\pm$ 20    & \numprint{17934} $\pm$ 332 \\
+			\hline \numprint{5000}    & \numprint{1075} $\pm$ 59 & \numprint{1703} $\pm$ 30    & \numprint{12892} $\pm$ 339 \\  
+			\hline \numprint{10000}   & \numprint{1016} $\pm$ 10 & \numprint{1924} $\pm$ 235   & \numprint{8307} $\pm$ 80   \\  
+			\hline \numprint{20000}   & \numprint{916} $\pm$ 8   & \numprint{1863} $\pm$ 217   & \numprint{7045} $\pm$ 72   \\ 
+			\hline \numprint{30000}   & \numprint{858} $\pm$ 4   & \numprint{1772} $\pm$ 182   & \numprint{6391} $\pm$ 94   \\ 
+			\hline \numprint{40000}   & \numprint{790} $\pm$ 8   & \numprint{1606} $\pm$ 194   & \numprint{5790} $\pm$ 67   \\ 
+			\hline \numprint{50000}   & \numprint{756} $\pm$ 8   & \numprint{1503} $\pm$ 157   & \numprint{5292} $\pm$ 122  \\  
 			\hline 
-		\end{tabular}
+		\end{tabular}}
 	\end{table}	
 \end{frame}
 
+\begin{frame}{Причина худшего результата}
+	\begin{itemize}
+		\item Причина неэффективного переключения сопрограмм – использование медленной функции для переключения контекста.
+		\item Сейчас применяется getcontext/setcontext из glibc, потому что их проще использовать.
+	\end{itemize}
+	\begin{table}[H]
+		%\caption{Число переключений корутин}\label{inc-matrix}
+		\textit{\begin{tabular}{|c|c|c|c|c|c|} 
+				\hline Функции для переключения & Число переключений, дол. ед.                  \\
+				\hline Из библиотеки Си \textbf{tbox} & 7.8 									\\
+				\hline \textbf{Boost.Context} & 2.2 									     	\\
+				\hline getcontext/setcontext из \textbf{glibc} & 1   							\\
+				\hline 
+		\end{tabular}
+	}
+	\end{table}	
+\end{frame}
 
 \begin{frame}{Результаты: потребление памяти}
 	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ
 	\begin{table}[H]
-		\begin{tabular}{|c|c|c|c|c|c|}
+		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Резидентная память}  \\
 			\cline{2-4}    & HuaweiJDK   & OpenJDK    & Go       \\
 			\hline 100     & 18 Mб       & 130 Mб     & 3040 Kб  \\
@@ -177,7 +191,7 @@
 			\hline 40000   & 49 Mб       & 200 Mб     & 3390 Kб  \\
 			\hline 50000   & 55 Mб       & 202 Mб     & 3407 Kб  \\ 
 			\hline 
-		\end{tabular}
+		\end{tabular}}
 	\end{table}
 \end{frame}
 
@@ -185,7 +199,7 @@
 	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ, HuaweiJDK
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
-		\begin{tabular}{|c|c|c|c|c|c|}
+		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Размер физической памяти}  \\
 			\cline{2-3}    & Сопрограммы   & Потоки    \\
 			\hline 100     & 18 Mб         & 34 Mб     \\
@@ -197,7 +211,7 @@
 			\hline 40000   & 49 Mб         & 63 Mб     \\
 			\hline 50000   & 55 Mб         & 72 Mб     \\ 
 			\hline 
-		\end{tabular}
+		\end{tabular}}
 	\end{table}
 \end{frame}
 
