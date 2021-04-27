@@ -126,29 +126,29 @@
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, тыс./сек.}                  \\
 			\cline{2-4}               & HuaweiJDK                & OpenJDK("Loom Project")     & Go                   \\
-			\hline 100                & \numprint{1246} $\pm$ 13 & \numprint{1900} $\pm$ 20    & \numprint{18187} $\pm$ 219 \\
-			\hline \numprint{1000}    & \numprint{1199} $\pm$ 12 & \numprint{1775} $\pm$ 20    & \numprint{17934} $\pm$ 332 \\
-			\hline \numprint{5000}    & \numprint{1075} $\pm$ 59 & \numprint{1703} $\pm$ 30    & \numprint{12892} $\pm$ 339 \\  
-			\hline \numprint{10000}   & \numprint{1016} $\pm$ 10 & \numprint{1924} $\pm$ 235   & \numprint{8307} $\pm$ 80   \\  
-			\hline \numprint{20000}   &              916 $\pm$ 8 & \numprint{1863} $\pm$ 217   & \numprint{7045} $\pm$ 72   \\ 
-			\hline \numprint{30000}   &              858 $\pm$ 4 & \numprint{1772} $\pm$ 182   & \numprint{6391} $\pm$ 94   \\ 
-			\hline \numprint{40000}   &              790 $\pm$ 8 & \numprint{1606} $\pm$ 194   & \numprint{5790} $\pm$ 67   \\ 
-			\hline \numprint{50000}   &              756 $\pm$ 8 & \numprint{1503} $\pm$ 157   & \numprint{5292} $\pm$ 122  \\  
+			\hline 100                & \numprint{1956} $\pm$ 38 & \numprint{1900} $\pm$ 20    & \numprint{18187} $\pm$ 219 \\
+			\hline \numprint{1000}    & \numprint{1829} $\pm$ 12 & \numprint{1775} $\pm$ 20    & \numprint{17934} $\pm$ 332 \\
+			\hline \numprint{5000}    & \numprint{1578} $\pm$ 39 & \numprint{1703} $\pm$ 30    & \numprint{12892} $\pm$ 339 \\  
+			\hline \numprint{10000}   & \numprint{1316} $\pm$ 20 & \numprint{1924} $\pm$ 235   & \numprint{8307} $\pm$ 80   \\  
+			\hline \numprint{20000}   &             1226 $\pm$ 8 & \numprint{1863} $\pm$ 217   & \numprint{7045} $\pm$ 72   \\ 
+			\hline \numprint{30000}   &             1068 $\pm$ 7 & \numprint{1772} $\pm$ 182   & \numprint{6391} $\pm$ 94   \\ 
+			\hline \numprint{40000}   &              928 $\pm$ 7 & \numprint{1606} $\pm$ 194   & \numprint{5790} $\pm$ 67   \\ 
+			\hline \numprint{50000}   &              881 $\pm$ 5 & \numprint{1503} $\pm$ 157   & \numprint{5292} $\pm$ 122  \\  
 			\hline 
 		\end{tabular}}
 	\end{table}	
 \end{frame}
 
-\begin{frame}{Причина худшего результата}
+\begin{frame}{Функции для переключения контекста}
 	\begin{itemize}
-		\item Причина неэффективного переключения сопрограмм – использование медленных функции для переключения контекста getcontext/setcontext из glibc.
+		\item Первый прототип использовал функции для переключения контекста getcontext/setcontext из glibc.
 	\end{itemize}
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
 		\textit{\begin{tabular}{|c|c|c|c|c|c|} 
-				\hline Функции для переключения & Число переключений, дол. ед.                  \\
+				\hline Функции для переключения       & Число переключений, дол. ед.            \\
 				\hline Из библиотеки Си \textbf{tbox} & 7.8 									\\
-				\hline \textbf{Boost.Context} & 2.2 									     	\\
+				\hline \textbf{Boost.Context}         & 2.2 									\\
 				\hline getcontext/setcontext из \textbf{glibc} & 1   							\\
 				\hline 
 		\end{tabular}
@@ -163,16 +163,16 @@
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
-				\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, тыс./сек.}  \\
-				\cline{2-4}    		   		& getcontext/setcontext    & Новые функции            & Без сохр. рег.  \\
-				\hline 100     		   		& \numprint{1246} $\pm$ 13 & \numprint{5599} $\pm$ 73 & \numprint{12980} $\pm$ 540 \\
-				\hline \numprint{1000} 		& \numprint{1199} $\pm$ 12 & \numprint{5375} $\pm$ 77 & \numprint{11420} $\pm$ 694 \\
-				\hline \numprint{5000} 		& \numprint{1075} $\pm$ 59 & \numprint{3510} $\pm$ 75 & \numprint{5875} $\pm$ 183 \\
-				\hline \numprint{10000}		& \numprint{1016} $\pm$ 10 & \numprint{3076} $\pm$ 58 & \numprint{4459} $\pm$ 162 \\ 
-				\hline \numprint{20000}		& 916 $\pm$ 8   		   & \numprint{2472} $\pm$ 39 & \numprint{3604} $\pm$ 93  \\ 
-				\hline \numprint{30000}		& 858 $\pm$ 4   		   & \numprint{2106} $\pm$ 38 & \numprint{3031} $\pm$ 94  \\ 
-				\hline \numprint{40000}		& 790 $\pm$ 8    		   & \numprint{1856} $\pm$ 36 & \numprint{2653} $\pm$ 87  \\ 
-				\hline \numprint{50000}		& 756 $\pm$ 8    		   & \numprint{1673} $\pm$ 28 & \numprint{2315} $\pm$ 60  \\ 
+				\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Число переключений, тыс./сек.}   \\
+				\cline{2-3}    		   		& getcontext/setcontext    &  Новые функции             \\
+				\hline 100     		   		& \numprint{1956} $\pm$ 38 & \numprint{12980} $\pm$ 540 \\
+				\hline \numprint{1000} 		& \numprint{1829} $\pm$ 12 & \numprint{11420} $\pm$ 694 \\
+				\hline \numprint{5000} 		& \numprint{1578} $\pm$ 39 & \numprint{5875} $\pm$ 183  \\
+				\hline \numprint{10000}		& \numprint{1316} $\pm$ 20 & \numprint{4459} $\pm$ 162  \\ 
+				\hline \numprint{20000}		& 1226 $\pm$ 8   		   & \numprint{3604} $\pm$ 93   \\ 
+				\hline \numprint{30000}		& 1068 $\pm$ 7   		   & \numprint{3031} $\pm$ 94   \\ 
+				\hline \numprint{40000}		& 928 $\pm$ 7    		   & \numprint{2653} $\pm$ 87   \\ 
+				\hline \numprint{50000}		& 881 $\pm$ 5    		   & \numprint{2315} $\pm$ 60   \\ 
 				\hline 
 			\end{tabular}
 		}
@@ -186,16 +186,16 @@
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
-				\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Число переключений, тыс./сек.}    \\
-				\cline{2-3}              & Сопрограммы              & Потоки                    \\
-				\hline 100               & \numprint{5599} $\pm$ 73 & \numprint{2306} $\pm$ 50  \\
-				\hline \numprint{1000}   & \numprint{5375} $\pm$ 77 & \numprint{2300} $\pm$ 27  \\
-				\hline \numprint{5000}   & \numprint{3510} $\pm$ 75 & \numprint{1554} $\pm$ 37  \\
-				\hline \numprint{10000}  & \numprint{3076} $\pm$ 58 & \numprint{1016} $\pm$ 29  \\ 
-				\hline \numprint{20000}  & \numprint{2472} $\pm$ 39 & 753   $\pm$ 28            \\ 
-				\hline \numprint{30000}  & \numprint{2106} $\pm$ 38 & 556   $\pm$ 16            \\ 
-				\hline \numprint{40000}  & \numprint{1856} $\pm$ 36 & 436   $\pm$ 12            \\ 
-				\hline \numprint{50000}  & \numprint{1673} $\pm$ 28 & 361   $\pm$ 8             \\ 
+				\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Число переключений, тыс./сек.} \\
+				\cline{2-3}              & Сопрограммы                & Потоки                    \\
+				\hline 100               & \numprint{12980} $\pm$ 540 & \numprint{2306} $\pm$ 50  \\
+				\hline \numprint{1000}   & \numprint{11420} $\pm$ 694 & \numprint{2300} $\pm$ 27  \\
+				\hline \numprint{5000}   & \numprint{5875} $\pm$ 183  & \numprint{1554} $\pm$ 37   \\
+				\hline \numprint{10000}  & \numprint{4459} $\pm$ 162  & \numprint{1016} $\pm$ 29   \\ 
+				\hline \numprint{20000}  & \numprint{3604} $\pm$ 93   & 753   $\pm$ 28              \\ 
+				\hline \numprint{30000}  & \numprint{3031} $\pm$ 94   & 556   $\pm$ 16              \\ 
+				\hline \numprint{40000}  & \numprint{2653} $\pm$ 87   & 436   $\pm$ 12              \\ 
+				\hline \numprint{50000}  & \numprint{2315} $\pm$ 60   & 361   $\pm$ 8               \\ 
 				\hline 
 			\end{tabular}
 		}
@@ -210,13 +210,13 @@
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Резидентная память}  \\
 			\cline{2-4}    & HuaweiJDK   & OpenJDK    & Go        \\
 			\hline 100     & 18 Mб       & 130 Mб     & 3,04  Mб  \\
-			\hline 1000    & 23 Mб       & 161 Mб     & 3,105 Mб  \\
-			\hline 5000    & 30 Mб       & 187 Mб     & 3,156 Mб  \\
-			\hline 10000   & 35 Mб       & 193 Mб     & 3,308 Mб  \\
-			\hline 20000   & 40 Mб       & 196 Mб     & 3,320 Mб  \\
-			\hline 30000   & 45 Mб       & 197 Mб     & 3,350 Mб  \\
-			\hline 40000   & 49 Mб       & 200 Mб     & 3,390 Mб  \\
-			\hline 50000   & 55 Mб       & 202 Mб     & 3,407 Mб  \\ 
+			\hline 1000    & 22 Mб       & 161 Mб     & 3,105 Mб  \\
+			\hline 5000    & 32 Mб       & 187 Mб     & 3,156 Mб  \\
+			\hline 10000   & 37 Mб       & 193 Mб     & 3,308 Mб  \\
+			\hline 20000   & 45 Mб       & 196 Mб     & 3,320 Mб  \\
+			\hline 30000   & 49 Mб       & 197 Mб     & 3,350 Mб  \\
+			\hline 40000   & 51 Mб       & 200 Mб     & 3,390 Mб  \\
+			\hline 50000   & 57 Mб       & 202 Mб     & 3,407 Mб  \\ 
 			\hline 
 		\end{tabular}}
 	\end{table}
@@ -230,13 +230,13 @@
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Размер физической памяти}  \\
 			\cline{2-3}    & Сопрограммы   & Потоки    \\
 			\hline 100     & 18 Mб         & 34 Mб     \\
-			\hline 1000    & 23 Mб         & 35 Mб     \\
-			\hline 5000    & 30 Mб         & 37 Mб     \\
-			\hline 10000   & 35 Mб         & 40 Mб     \\
-			\hline 20000   & 40 Mб         & 49 Mб     \\
-			\hline 30000   & 45 Mб         & 56 Mб     \\
-			\hline 40000   & 49 Mб         & 63 Mб     \\
-			\hline 50000   & 55 Mб         & 72 Mб     \\ 
+			\hline 1000    & 22 Mб         & 35 Mб     \\
+			\hline 5000    & 32 Mб         & 37 Mб     \\
+			\hline 10000   & 37 Mб         & 40 Mб     \\
+			\hline 20000   & 45 Mб         & 49 Mб     \\
+			\hline 30000   & 49 Mб         & 56 Mб     \\
+			\hline 40000   & 51 Mб         & 63 Mб     \\
+			\hline 50000   & 57 Mб         & 72 Mб     \\ 
 			\hline 
 		\end{tabular}}
 	\end{table}
