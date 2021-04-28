@@ -126,14 +126,14 @@
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, тыс./сек.}                  \\
 			\cline{2-4}               & HuaweiJDK                & OpenJDK("Loom Project")     & Go                   \\
-			\hline 100                & \numprint{1956} $\pm$ 38 & \numprint{1900} $\pm$ 20    & \numprint{18187} $\pm$ 219 \\
-			\hline \numprint{1000}    & \numprint{1829} $\pm$ 12 & \numprint{1775} $\pm$ 20    & \numprint{17934} $\pm$ 332 \\
-			\hline \numprint{5000}    & \numprint{1578} $\pm$ 39 & \numprint{1703} $\pm$ 30    & \numprint{12892} $\pm$ 339 \\  
-			\hline \numprint{10000}   & \numprint{1316} $\pm$ 20 & \numprint{1924} $\pm$ 235   & \numprint{8307} $\pm$ 80   \\  
-			\hline \numprint{20000}   &             1226 $\pm$ 8 & \numprint{1863} $\pm$ 217   & \numprint{7045} $\pm$ 72   \\ 
-			\hline \numprint{30000}   &             1068 $\pm$ 7 & \numprint{1772} $\pm$ 182   & \numprint{6391} $\pm$ 94   \\ 
-			\hline \numprint{40000}   &              928 $\pm$ 7 & \numprint{1606} $\pm$ 194   & \numprint{5790} $\pm$ 67   \\ 
-			\hline \numprint{50000}   &              881 $\pm$ 5 & \numprint{1503} $\pm$ 157   & \numprint{5292} $\pm$ 122  \\  
+			\hline 100                & \numprint{1956} $\pm$ 38 & \numprint{1900} $\pm$ 20\phantom{0}    & \numprint{18187} $\pm$ 219 \\
+			\hline \numprint{1000}    & \numprint{1829} $\pm$ 12 & \numprint{1775} $\pm$ 20\phantom{0}    & \numprint{17934} $\pm$ 332 \\
+			\hline \numprint{5000}    & \numprint{1578} $\pm$ 39 & \numprint{1703} $\pm$ 30\phantom{0}    & \numprint{12892} $\pm$ 339 \\  
+			\hline \numprint{10000}   & \numprint{1316} $\pm$ 20 & \numprint{1924} $\pm$ 235   			  & \numprint{8307} $\pm$ 80   \\  
+			\hline \numprint{20000}   &  1226 $\pm$ 8\phantom{0} & \numprint{1863} $\pm$ 217   			  & \numprint{7045} $\pm$ 72   \\ 
+			\hline \numprint{30000}   &  1068 $\pm$ 7\phantom{0} & \numprint{1772} $\pm$ 182   			  & \numprint{6391} $\pm$ 94   \\ 
+			\hline \numprint{40000}   &              928 $\pm$ 7 & \numprint{1606} $\pm$ 194              & \numprint{5790} $\pm$ 67   \\ 
+			\hline \numprint{50000}   &              881 $\pm$ 5 & \numprint{1503} $\pm$ 157              & \phantom{0}\numprint{5292} $\pm$ 122  \\  
 			\hline 
 		\end{tabular}}
 	\end{table}	
@@ -167,16 +167,38 @@
 				\cline{2-3}    		   		& getcontext/setcontext    &  Новые функции             \\
 				\hline 100     		   		& \numprint{1956} $\pm$ 38 & \numprint{12980} $\pm$ 540 \\
 				\hline \numprint{1000} 		& \numprint{1829} $\pm$ 12 & \numprint{11420} $\pm$ 694 \\
-				\hline \numprint{5000} 		& \numprint{1578} $\pm$ 39 & \numprint{5875} $\pm$ 183  \\
-				\hline \numprint{10000}		& \numprint{1316} $\pm$ 20 & \numprint{4459} $\pm$ 162  \\ 
-				\hline \numprint{20000}		& 1226 $\pm$ 8   		   & \numprint{3604} $\pm$ 93   \\ 
-				\hline \numprint{30000}		& 1068 $\pm$ 7   		   & \numprint{3031} $\pm$ 94   \\ 
+				\hline \numprint{5000} 		& \numprint{1578} $\pm$ 39 & \phantom{0}\numprint{5875} $\pm$ 183  \\
+				\hline \numprint{10000}		& \numprint{1316} $\pm$ 20 & \phantom{0}\numprint{4459} $\pm$ 162  \\ 
+				\hline \numprint{20000}		& 1226 $\pm$ 8\phantom{0}  & \numprint{3604} $\pm$ 93   \\ 
+				\hline \numprint{30000}		& 1068 $\pm$ 7\phantom{0}  & \numprint{3031} $\pm$ 94   \\ 
 				\hline \numprint{40000}		& 928 $\pm$ 7    		   & \numprint{2653} $\pm$ 87   \\ 
 				\hline \numprint{50000}		& 881 $\pm$ 5    		   & \numprint{2315} $\pm$ 60   \\ 
 				\hline 
 			\end{tabular}
 		}
 	\end{table}
+\end{frame}
+
+\begin{frame}{Измерение скорости переключения сопрограмм в управляемых средах}
+	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ, HuaweiJDK
+	\par Каждое значение усреднено по 100 измерениям. 
+	
+	\begin{table}[H]
+		%\caption{Число переключений корутин}\label{inc-matrix}
+		\textit{\begin{tabular}{|c|c|c|c|c|c|}
+				\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, тыс./сек.}                  \\
+				\cline{2-4}               & HuaweiJDK                  & OpenJDK("Loom Project")     & Go                   \\
+				\hline 100                & \numprint{12980} $\pm$ 540 & \numprint{1900} $\pm$ 20\phantom{0}    & \numprint{18187} $\pm$ 219 \\
+				\hline \numprint{1000}    & \numprint{11420} $\pm$ 694 & \numprint{1775} $\pm$ 20\phantom{0}    & \numprint{17934} $\pm$ 332 \\
+				\hline \numprint{5000}    & \phantom{0}\numprint{5875} $\pm$ 183   & \numprint{1703} $\pm$ 30\phantom{0}    & \numprint{12892} $\pm$ 339 \\  
+				\hline \numprint{10000}   & \phantom{0}\numprint{4459} $\pm$ 162 & \numprint{1924} $\pm$ 235   			  & \numprint{8307} $\pm$ 80   \\  
+				\hline \numprint{20000}   & \numprint{3604} $\pm$ 93 & \numprint{1863} $\pm$ 217   			  & \numprint{7045} $\pm$ 72   \\ 
+				\hline \numprint{30000}   & \numprint{3031} $\pm$ 94 & \numprint{1772} $\pm$ 182   			  & \numprint{6391} $\pm$ 94   \\ 
+				\hline \numprint{40000}   & \numprint{2653} $\pm$ 87 & \numprint{1606} $\pm$ 194              & \numprint{5790} $\pm$ 67   \\ 
+				\hline \numprint{50000}   & \numprint{2315} $\pm$ 60 & \numprint{1503} $\pm$ 157              & \phantom{0}\numprint{5292} $\pm$ 122  \\  
+				\hline 
+		\end{tabular}}
+	\end{table}	
 \end{frame}
 
 \begin{frame}{Измерение скорости переключения потоков и сопрограмм}
@@ -187,15 +209,15 @@
 		%\caption{Число переключений корутин}\label{inc-matrix}
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 				\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Число переключений, тыс./сек.} \\
-				\cline{2-3}              & Сопрограммы                & Потоки                    \\
-				\hline 100               & \numprint{12980} $\pm$ 540 & \numprint{2306} $\pm$ 50  \\
-				\hline \numprint{1000}   & \numprint{11420} $\pm$ 694 & \numprint{2300} $\pm$ 27  \\
-				\hline \numprint{5000}   & \numprint{5875} $\pm$ 183  & \numprint{1554} $\pm$ 37   \\
-				\hline \numprint{10000}  & \numprint{4459} $\pm$ 162  & \numprint{1016} $\pm$ 29   \\ 
-				\hline \numprint{20000}  & \numprint{3604} $\pm$ 93   & 753   $\pm$ 28              \\ 
-				\hline \numprint{30000}  & \numprint{3031} $\pm$ 94   & 556   $\pm$ 16              \\ 
-				\hline \numprint{40000}  & \numprint{2653} $\pm$ 87   & 436   $\pm$ 12              \\ 
-				\hline \numprint{50000}  & \numprint{2315} $\pm$ 60   & 361   $\pm$ 8               \\ 
+				\cline{2-3}              & Сопрограммы                           & Потоки                    \\
+				\hline 100               & \numprint{12980} $\pm$ 540            & \numprint{2306} $\pm$ 50  \\
+				\hline \numprint{1000}   & \numprint{11420} $\pm$ 694            & \numprint{2300} $\pm$ 27  \\
+				\hline \numprint{5000}   & \phantom{0}\numprint{5875} $\pm$ 183  & \numprint{1554} $\pm$ 37   \\
+				\hline \numprint{10000}  & \phantom{0}\numprint{4459} $\pm$ 162  & \numprint{1016} $\pm$ 29   \\ 
+				\hline \numprint{20000}  & \numprint{3604} $\pm$ 93              & \phantom{0}753   $\pm$ 28              \\ 
+				\hline \numprint{30000}  & \numprint{3031} $\pm$ 94              & \phantom{0}556   $\pm$ 16              \\ 
+				\hline \numprint{40000}  & \numprint{2653} $\pm$ 87              & \phantom{0}436   $\pm$ 12              \\ 
+				\hline \numprint{50000}  & \numprint{2315} $\pm$ 60              & 		361   $\pm$ 8               \\ 
 				\hline 
 			\end{tabular}
 		}
