@@ -36,7 +36,7 @@
 	
 \begin{frame}{Ключевые отличия от потоков ОС}
 	\begin{itemize}
-		\item Переключение контекста сопрограммы требует меньше накладных расходов, чем потока.
+		\item Переключение контекста сопрограммы требует меньше накладных расходов, чем переключение потока.
 		\item Как правило меньший размер стека, а значит, потребление памяти так же меньше.
 	\end{itemize}
 \end{frame}
@@ -66,7 +66,7 @@
 \end{frame}
 
 \begin{frame}
-	\includegraphics[scale=0.5]{images/loom.jpg}
+	\includegraphics[scale=0.4]{images/loom.jpg}
 	\begin{itemize}
 		\item Project Loom – проект на базе OpenJDK, целью которого является разработка сопрограмм для языка Java. 
 		\item На данный момент уже доступна ранняя версия проекта.
@@ -84,7 +84,7 @@
 		\item Сравнить производительность сопрограмм и потоков. 
 	\end{itemize}
 	Работа проводится на базе Huawei JDK.
-\end{frame}
+\end{frame} 
 
 \begin{frame}{Тесты производительности}
 	Был создан набор тестов производительности сопрограмм для языков Go, Java (с “Loom Project”).
@@ -102,30 +102,37 @@
 		\includegraphics[scale=0.5]{images/scheme.jpg}
 	\end{figure}
 	\par
-	Подходы к реализации:
 	\begin{itemize}
-		\item OpenJDK(Проект "Loom"): копирование стека сопрограммы при переключении.
-		\item Go и HuaweiJDK: изменение указателя стека.
+		\item Функция yeild() переключает управление от одной сопрограммы другой.
+		\item Завершение выполнения сопрограммы приводит к переключению на другую.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Трассировка стеков}
+\begin{frame}{Подходы к реализации переключения сопрограмм}
+	\begin{itemize}
+		\item OpenJDK/"Loom": копирование стека сопрограммы при переключении.
+		\item Go: изменение указателя стека.
+	\end{itemize}
 
+	В HuaweiJDK выбран подход языка Go, поскольку он более эффективен.
+\end{frame}
+
+\begin{frame}{Трассировка стеков}
 	\begin{itemize}
 		\item Для работы сборщика мусора необходимо хранить адрес начала и конца стека каждой сопрограммы.
 		\item При сборке мусора сканируются все стеки сопрограмм для поиска корневого множества живых объектов.
 	\end{itemize}
 \end{frame}	
 
-\begin{frame}{Измерение скорости переключения сопрограмм в управляемых средах}
-	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ, HuaweiJDK
+\begin{frame}{Измерение скорости переключения сопрограмм}
+	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ
 	\par Каждое значение усреднено по 100 измерениям. 
 	
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, тыс./сек.}                  \\
-			\cline{2-4}               & HuaweiJDK                & OpenJDK("Loom Project")     & Go                   \\
+			\cline{2-4}               & HuaweiJDK                & OpenJDK/"Loom"                         & Go                   \\
 			\hline 100                & \numprint{1956} $\pm$ 38 & \numprint{1900} $\pm$ 20\phantom{0}    & \numprint{18187} $\pm$ 219 \\
 			\hline \numprint{1000}    & \numprint{1829} $\pm$ 12 & \numprint{1775} $\pm$ 20\phantom{0}    & \numprint{17934} $\pm$ 332 \\
 			\hline \numprint{5000}    & \numprint{1578} $\pm$ 39 & \numprint{1703} $\pm$ 30\phantom{0}    & \numprint{12892} $\pm$ 339 \\  
@@ -154,10 +161,11 @@
 		\end{tabular}
 	}
 	\end{table}	
+	К сожалению, эти функции нельзя использовать, поскольку они не учитывают внутренние особенности JVM.
 \end{frame}
 
 \begin{frame}{Измерение скорости переключения сопрограмм в HuaweiJDK с новыми функциями переключения контекста}
-	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ, HuaweiJDK
+	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ
 	\par Каждое значение усреднено по 100 измерениям. 
 	\par Для измерения используется только одно ядро ЦП.
 	\begin{table}[H]
@@ -180,18 +188,18 @@
 \end{frame}
 
 \begin{frame}{Измерение скорости переключения сопрограмм в управляемых средах}
-	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ, HuaweiJDK
+	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ
 	\par Каждое значение усреднено по 100 измерениям. 
 	
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 				\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, тыс./сек.}                  \\
-				\cline{2-4}               & HuaweiJDK                  & OpenJDK("Loom Project")     & Go                   \\
+				\cline{2-4}               & HuaweiJDK                  & OpenJDK/"Loom"     & Go                   \\
 				\hline 100                & \numprint{12980} $\pm$ 540 & \numprint{1900} $\pm$ 20\phantom{0}    & \numprint{18187} $\pm$ 219 \\
 				\hline \numprint{1000}    & \numprint{11420} $\pm$ 694 & \numprint{1775} $\pm$ 20\phantom{0}    & \numprint{17934} $\pm$ 332 \\
 				\hline \numprint{5000}    & \phantom{0}\numprint{5875} $\pm$ 183   & \numprint{1703} $\pm$ 30\phantom{0}    & \numprint{12892} $\pm$ 339 \\  
-				\hline \numprint{10000}   & \phantom{0}\numprint{4459} $\pm$ 162 & \numprint{1924} $\pm$ 235   			  & \numprint{8307} $\pm$ 80   \\  
+				\hline \numprint{10000}   & \phantom{0}\numprint{4459} $\pm$ 162 & \numprint{1924} $\pm$ 235  & \numprint{8307} $\pm$ 80   \\  
 				\hline \numprint{20000}   & \numprint{3604} $\pm$ 93 & \numprint{1863} $\pm$ 217   			  & \numprint{7045} $\pm$ 72   \\ 
 				\hline \numprint{30000}   & \numprint{3031} $\pm$ 94 & \numprint{1772} $\pm$ 182   			  & \numprint{6391} $\pm$ 94   \\ 
 				\hline \numprint{40000}   & \numprint{2653} $\pm$ 87 & \numprint{1606} $\pm$ 194              & \numprint{5790} $\pm$ 67   \\ 
@@ -202,7 +210,7 @@
 \end{frame}
 
 \begin{frame}{Измерение скорости переключения потоков и сопрограмм}
-	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ, HuaweiJDK
+	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ, HuaweiJDK
 	\par Каждое значение усреднено по 100 измерениям. 
 	\par Для измерения используется только одно ядро ЦП.
 	\begin{table}[H]
@@ -226,26 +234,26 @@
 \end{frame}
 
 \begin{frame}{Измерение потребление памяти сопрограмм в управляемых средах}
-	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ
+	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ
 	\begin{table}[H]
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Резидентная память}  \\
-			\cline{2-4}    & HuaweiJDK   & OpenJDK    & Go        \\
-			\hline 100     & 18 Mб       & 130 Mб     & 3,04  Mб  \\
-			\hline 1000    & 22 Mб       & 161 Mб     & 3,105 Mб  \\
-			\hline 5000    & 32 Mб       & 187 Mб     & 3,156 Mб  \\
-			\hline 10000   & 37 Mб       & 193 Mб     & 3,308 Mб  \\
-			\hline 20000   & 45 Mб       & 196 Mб     & 3,320 Mб  \\
-			\hline 30000   & 49 Mб       & 197 Mб     & 3,350 Mб  \\
-			\hline 40000   & 51 Mб       & 200 Mб     & 3,390 Mб  \\
-			\hline 50000   & 57 Mб       & 202 Mб     & 3,407 Mб  \\ 
+			\cline{2-4}    & HuaweiJDK   & OpenJDK/"Loom"    & Go        \\
+			\hline 100     & 18 Mб       & 130 Mб    		 & 3,040  Mб \\
+			\hline 1000    & 22 Mб       & 161 Mб     		 & 3,105 Mб  \\
+			\hline 5000    & 32 Mб       & 187 Mб    		 & 3,156 Mб  \\
+			\hline 10000   & 37 Mб       & 193 Mб     		 & 3,308 Mб  \\
+			\hline 20000   & 45 Mб       & 196 Mб     		 & 3,320 Mб  \\
+			\hline 30000   & 49 Mб       & 197 Mб     		 & 3,350 Mб  \\
+			\hline 40000   & 51 Mб       & 200 Mб    		 & 3,390 Mб  \\
+			\hline 50000   & 57 Mб       & 202 Mб    		 & 3,407 Mб  \\ 
 			\hline 
 		\end{tabular}}
 	\end{table}
 \end{frame}
 
 \begin{frame}{Измерение потребление памяти потоков}
-	Ubuntu, Intel Core i7-8700, 31 Гб ОЗУ, HuaweiJDK
+	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ, HuaweiJDK
 	\begin{table}[H]
 		%\caption{Число переключений корутин}\label{inc-matrix}
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
@@ -267,17 +275,17 @@
 \begin{frame}{План дальнейших работ} 
 	\begin{itemize}
 		\item Поддержка synchronized блоков.
-		\item Переключение сопрограммы при вызове ввода вывода.
+		\item Переключение сопрограммы при вызове ввода--вывода.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Выводы}
+\begin{frame}{Результаты}
 	\begin{itemize}
 		\item Создан набор тестов для сравнения производительности потоков и сопрограмм.
 		\item Реализовано переключение контекста сопрограмм.
 		\item Разработана трассировка ссылок объектов на стеках сопрограмм.
-		\item Оптимизировано переключение контекста сопрограмм.
-		\item Проведено сравнение результаты тестов производительности.
+		\item Оптимизировано переключение контекста сопрограмм более чем в 3 раза.
+		\item Проведен анализ результатов тестов производительности.
 	\end{itemize}
 \end{frame}
 

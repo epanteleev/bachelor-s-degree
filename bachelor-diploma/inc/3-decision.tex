@@ -1,41 +1,88 @@
 \section{Описание решения}
-	Пред началом реализации сопрограмм в Excelsior RVM были разработаны тесты производительности для языков Go и ранней версией проекта "Loom".
+	
+	\subsection{Разработка тестов}
+	Пред началом реализации сопрограмм в Excelsior RVM были разработаны тесты производительности для языков Go и
+	ранней версией проекта "Loom". 
+	
+	Todo
+	
+	\subsection{Переключение сопрограмм в HuaweiJDK}
+	В таблице \ref{switch-table0} показаны результаты измерений скорости переключения сопрограмм Go и 
+	OpenJDK/Loom\footnote{все измерения проводились на операционной системе Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ}. 
+	Видно, что сопрограммы из языка Go выигрывают OpenJDK в скорости переключения.
 	
 	\begin{table}[H]
-		\caption{Число переключений корутин}\label{inc-matrix}
-		\begin{tabular}{|c|c|c|c|c|c|}
-			\hline \multirow{2}{*}{Число сопрограмм, шт.} & \multicolumn{3}{|c|}{Число переключений, шт/мин}    \\
-			\cline{2-4}    & Go      & Java потоки & Java(Loom) \\
-			\hline 100     & 8213552 & 6550504     & 4010587    \\
-			\hline 1000    & 8213552 & 2143438     & 3897875    \\
-			\hline 5000    & 3958044 & 1440942     & 3868023    \\
-			\hline 10000   & 2736352 & 1343995     & 3418569    \\
-			\hline 100000  & 2562853 & 888052      & 3889537    \\
-			\hline 1000000 & 2135474 & 1089360     & 3227888    \\
-			\hline 
-		\end{tabular}
+		\caption{Число переключений сопрограмм}\label{switch-table0}
+		\textit{\begin{tabular}{|c|c|c|c|c|c|}
+				\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Переключений, тыс./сек.}                  \\
+				\cline{2-3}               & OpenJDK/"Loom"                         & Go                   \\
+				\hline 100                & \numprint{1900} $\pm$ 20\phantom{0}    & \numprint{18187} $\pm$ 219 \\
+				\hline \numprint{1000}    & \numprint{1775} $\pm$ 20\phantom{0}    & \numprint{17934} $\pm$ 332 \\
+				\hline \numprint{5000}    & \numprint{1703} $\pm$ 30\phantom{0}    & \numprint{12892} $\pm$ 339 \\  
+				\hline \numprint{10000}   & \numprint{1924} $\pm$ 235   		   & \numprint{8307} $\pm$ 80   \\  
+				\hline \numprint{20000}   & \numprint{1863} $\pm$ 217   		   & \numprint{7045} $\pm$ 72   \\ 
+				\hline \numprint{30000}   & \numprint{1772} $\pm$ 182   		   & \numprint{6391} $\pm$ 94   \\ 
+				\hline \numprint{40000}   & \numprint{1606} $\pm$ 194              & \numprint{5790} $\pm$ 67   \\ 
+				\hline \numprint{50000}   & \numprint{1503} $\pm$ 157   & \phantom{0}\numprint{5292} $\pm$ 122  \\  
+				\hline 
+		\end{tabular}}
 	\end{table}
 	
-	
+	Поэтому, для реализации в HuaweiJDK был выбран подход языка Go. Из-за простоты использования, в раннем
+	прототипе для переключения контекста использовались функции из библиотеки glibc getcontext и swapcontext.
+	Результат измерения раннего прототипа приведен в таблице \ref{switch-table-huaweiJDK}.
+
 	\begin{table}[H]
-		\caption{Число запросов к эхо серверу}\label{inc-matrix}
-		\begin{tabular}{|c|c|c|c|c|c|}
-			\hline \multirow{2}{*}{Соединений, шт.} & 
-			\multicolumn{3}{|c|}{Число запросов, мл. шт/мин} \\
-			\cline{2-4} & Go   & Java потоки  & Java(Loom)   \\
-			\hline 100  & 11,5 & 9,7          & 7,1          \\
-			\hline 1000 & 7,8  & 9,5          & 5,7          \\
-			\hline 2000 & 7,6  & 9,3          & 5,2          \\
-			\hline 3000 & 7,4  & -            & 4,6          \\
-			\hline 4000 & 7,2  & -            & 4,3          \\
-			\hline 5000 & 7,1  & -            & 4,6          \\
+		\caption{Число переключений сопрограмм}\label{switch-table-huaweiJDK}
+		\textit{\begin{tabular}{|c|c|c|c|c|c|}
+				\hline \multirow{2}{*}{Шт.} & \multicolumn{1}{|c|}{Переключений, тыс./сек.}                  \\
+				\cline{2-2}               & HuaweiJDK                 \\
+				\hline 100                & \numprint{1956} $\pm$ 38  \\
+				\hline \numprint{1000}    & \numprint{1829} $\pm$ 12  \\
+				\hline \numprint{5000}    & \numprint{1578} $\pm$ 39  \\  
+				\hline \numprint{10000}   & \numprint{1316} $\pm$ 20  \\  
+				\hline \numprint{20000}   &  1226 $\pm$ 8\phantom{0}  \\ 
+				\hline \numprint{30000}   &  1068 $\pm$ 7\phantom{0}  \\ 
+				\hline \numprint{40000}   &              928 $\pm$ 7  \\ 
+				\hline \numprint{50000}   &              881 $\pm$ 5  \\  
+				\hline 
+		\end{tabular}}
+	\end{table}	
+	
+	Анализ исходного кода функции swapcontext показал, что переключение можно ускорить. 
+	Она используется для переключения потоков в операционных системах на ядре Linux[ref].
+	Функция делает системный вызов для сохранения текущей маски сигналов потока и переключает теневой
+	стек\footnote{Todo...} [уточнить, что в свежей glibc так],
+	в чем нет необходимости при переключении контекста сопрограмм. Это один из факторов, побудивший
+	реализовать аналоги функций getcontext, swapcontext внутри HuaweiJDK, которые бы учитывали особенности виртуальной
+	машины. На таблице \ref{huaweiJDK-cmp} представлено сравнение результатов скоростей переключения.  
+	\begin{table}[H]
+	\caption{Сравнение числа}\label{huaweiJDK-cmp}
+	\textit{\begin{tabular}{|c|c|c|c|c|c|}
+			\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Число переключений, тыс./сек.}   \\
+			\cline{2-3}    		   		& getcontext/setcontext    & Функции из HuaweiJDK       \\
+			\hline 100     		   		& \numprint{1956} $\pm$ 38 & \numprint{12980} $\pm$ 540 \\
+			\hline \numprint{1000} 		& \numprint{1829} $\pm$ 12 & \numprint{11420} $\pm$ 694 \\
+			\hline \numprint{5000} 		& \numprint{1578} $\pm$ 39 & \phantom{0}\numprint{5875} $\pm$ 183  \\
+			\hline \numprint{10000}		& \numprint{1316} $\pm$ 20 & \phantom{0}\numprint{4459} $\pm$ 162  \\ 
+			\hline \numprint{20000}		& 1226 $\pm$ 8\phantom{0}  & \numprint{3604} $\pm$ 93   \\ 
+			\hline \numprint{30000}		& 1068 $\pm$ 7\phantom{0}  & \numprint{3031} $\pm$ 94   \\ 
+			\hline \numprint{40000}		& 928 $\pm$ 7    		   & \numprint{2653} $\pm$ 87   \\ 
+			\hline \numprint{50000}		& 881 $\pm$ 5    		   & \numprint{2315} $\pm$ 60   \\ 
 			\hline 
 		\end{tabular}
+	}
 	\end{table}
-	 
-	Реализация сопрограмм в Excelsior RVM отличается от подхода в проекте "Loom". Вместо
-	копирования стека сопрограммы при каждом переключении используется механизм, похожий на
-	переключения потоков операционной системы.
+	Видно, что функции из glibc проигрывают в несколько раз при любом количестве сопрограмм.
+	\subsection{Сборка мусора}
+	Следущим шагом работы стала сборка мусора объектов, расположенных в зоне видимости функций, вызванных в
+	сопрограмме. Виртуальная машина Java хранит список начал и вершин всех потоков, созданных в процессе работы.
+	Это необходимо для того, чтобы при сборке мусора стало возможным нахождение всего
+	корневого множества живых объектов. 
+	\par
+	В случае сопрограмм необходимо повторить данную логику: требуется хранить все адреса начал и вершин в некотором
+	буфере. Но в отличии от потоков, нужно еще сохранять регистры приостановленных сопрограмм для корректной сборки. 
 	
-	
+	\subsection{Потребление памяти}
+		Todo.
 \clearpage
