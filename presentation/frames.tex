@@ -13,31 +13,18 @@
 		(программный стек и регистры), и передавать управление другой.
 	\end{itemize}
 \end{frame}
-
-\begin{frame}	
-	\begin{figure}[h!]
-		\centering
-		\begin{subfigure}[b]{0.4\linewidth}
-			\includegraphics[width=\linewidth]{images/server.jpg}
-			\caption{Серверы.}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.4\linewidth}
-			\includegraphics[width=\linewidth]{images/browsers.jpg}
-			\caption{Браузеры.}
-		\end{subfigure}
-		\hfill
-	\end{figure}
-	\par
-	\begin{itemize}
-		\item Обработка множества независимых событий.
-		\item Организация асинхронного ввода/вывода.
-	\end{itemize}
-\end{frame}
 	
 \begin{frame}{Ключевые отличия от потоков ОС}
 	\begin{itemize}
 		\item Переключение контекста сопрограммы требует меньше накладных расходов, чем переключение потока.
 		\item Как правило меньший размер стека, а значит, потребление памяти так же меньше.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Применение сопрограмм.}
+	\begin{itemize}
+		\item Обработка множества независимых событий.
+		\item Организация параллельной обработки данных.
 	\end{itemize}
 \end{frame}
 
