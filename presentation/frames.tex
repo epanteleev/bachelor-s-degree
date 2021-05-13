@@ -5,6 +5,23 @@
 \end{frame}
 }
 
+\begin{frame}{Язык Java в физике}
+	Язык Java используется для создания сложных многопоточных приложений, в том
+	числе для физических исследований в ЦЕРНе: 
+	\begin{enumerate}
+		\item Системы управления Большим Адронным Коллайдером.
+		\item Многопоточная обработка экспериментальных данных: Colt Parallel. 
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Возможности для оптимизации}
+	\begin{enumerate}
+		\item Создание потока дорогостоящая операция в ОС.
+		\item Переключение потоков несет в себе серьезные накладные расходы.
+	\end{enumerate}
+	Существует альтернативный способ организации параллельных систем -- \textbf{сопрограммы}. 
+\end{frame}
+
 \begin{frame}{Сопрограммы}
 	\begin{itemize}
 		\item \textbf{Сопрограмма} (англ. coroutine) - программный модуль, организованный для обеспечения взаимодействия с другими модулями по принципу кооперативной многозадачности.
@@ -13,22 +30,8 @@
 		(программный стек и регистры), и передавать управление другой.
 	\end{itemize}
 \end{frame}
-	
-\begin{frame}{Ключевые отличия от потоков ОС}
-	\begin{itemize}
-		\item Переключение контекста сопрограммы требует меньше накладных расходов, чем переключение потока.
-		\item Как правило меньший размер стека, а значит, потребление памяти так же меньше.
-	\end{itemize}
-\end{frame}
 
-\begin{frame}{Применение сопрограмм.}
-	\begin{itemize}
-		\item Обработка множества независимых событий.
-		\item Организация параллельной обработки данных.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Поддержка в языках программирования}
+\begin{frame}{Реализация в языках программирования}
 	\begin{figure}
 	\centering
 	\hfill
@@ -61,14 +64,14 @@
 \end{frame}
 
 \begin{frame}{Цели и задачи}
-	Цель: реализация прототипа сопрограмм в Java.
+	Цель: изучить эффективность использования сопрограмм для языка Java.
 	\par
 	Поставленные задачи:
 	\begin{itemize}
 		\item Разработать тесты для сравнения производительности потоков и сопрограмм.
-		\item Реализовать переключение сопрограмм.
-		\item Реализовать трассировку ссылок объектов на стеках сопрограмм для сборки мусора.
-		\item Сравнить производительность сопрограмм и потоков. 
+		\item Реализовать модуль сопрограмм.
+		\item Сравнить производительность сопрограмм и потоков.
+		\item Выявить ключевые плюсы использования сопрограмм.
 	\end{itemize}
 	Работа проводится на базе Huawei JDK.
 \end{frame} 
@@ -78,6 +81,7 @@
 	
 	Тесты создавались для измерения 2 параметров.
 	\begin{itemize}
+		\item Скорость создания потока/сопрограммы. % оверхед на создание пропорционален скорости переключения.
 		\item Скорость переключения контекста.
 		\item Потребление памяти.
 	\end{itemize}
@@ -102,76 +106,6 @@
 	\end{itemize}
 
 	В HuaweiJDK выбран подход языка Go, поскольку он более эффективен.
-\end{frame}
-
-\begin{frame}{Трассировка стеков}
-	\begin{itemize}
-		\item Для работы сборщика мусора необходимо хранить адрес начала и конца стека каждой сопрограммы.
-		\item При сборке мусора сканируются все стеки сопрограмм для поиска корневого множества живых объектов.
-	\end{itemize}
-\end{frame}	
-
-\begin{frame}{Измерение скорости переключения сопрограмм}
-	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ
-	\par Каждое значение усреднено по 100 измерениям. 
-	
-	\begin{table}[H]
-		%\caption{Число переключений корутин}\label{inc-matrix}
-		\textit{\begin{tabular}{|c|c|c|c|c|c|}
-			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Число переключений, тыс./сек.}                  \\
-			\cline{2-4}               & HuaweiJDK                & OpenJDK/"Loom"                         & Go                   \\
-			\hline 100                & \numprint{1956} $\pm$ 38 & \numprint{1900} $\pm$ 20\phantom{0}    & \numprint{18187} $\pm$ 219 \\
-			\hline \numprint{1000}    & \numprint{1829} $\pm$ 12 & \numprint{1775} $\pm$ 20\phantom{0}    & \numprint{17934} $\pm$ 332 \\
-			\hline \numprint{5000}    & \numprint{1578} $\pm$ 39 & \numprint{1703} $\pm$ 30\phantom{0}    & \numprint{12892} $\pm$ 339 \\  
-			\hline \numprint{10000}   & \numprint{1316} $\pm$ 20 & \numprint{1924} $\pm$ 235   			  & \numprint{8307} $\pm$ 80   \\  
-			\hline \numprint{20000}   &  1226 $\pm$ 8\phantom{0} & \numprint{1863} $\pm$ 217   			  & \numprint{7045} $\pm$ 72   \\ 
-			\hline \numprint{30000}   &  1068 $\pm$ 7\phantom{0} & \numprint{1772} $\pm$ 182   			  & \numprint{6391} $\pm$ 94   \\ 
-			\hline \numprint{40000}   &              928 $\pm$ 7 & \numprint{1606} $\pm$ 194              & \numprint{5790} $\pm$ 67   \\ 
-			\hline \numprint{50000}   &              881 $\pm$ 5 & \numprint{1503} $\pm$ 157              & \phantom{0}\numprint{5292} $\pm$ 122  \\  
-			\hline 
-		\end{tabular}}
-	\end{table}	
-\end{frame}
-
-\begin{frame}{Функции для переключения контекста}
-	\begin{itemize}
-		\item Первый прототип использовал функции для переключения контекста getcontext/setcontext из glibc.
-	\end{itemize}
-	\begin{table}[H]
-		%\caption{Число переключений корутин}\label{inc-matrix}
-		\textit{\begin{tabular}{|c|c|c|c|c|c|} 
-				\hline Функции для переключения       & Число переключений, дол. ед.            \\
-				\hline Из библиотеки Си \textbf{tbox} & 7.8 									\\
-				\hline \textbf{Boost.Context}         & 2.2 									\\
-				\hline getcontext/setcontext из \textbf{glibc} & 1   							\\
-				\hline 
-		\end{tabular}
-	}
-	\end{table}	
-	К сожалению, эти функции нельзя использовать, поскольку они не учитывают внутренние особенности JVM.
-\end{frame}
-
-\begin{frame}{Измерение скорости переключения сопрограмм в HuaweiJDK с новыми функциями переключения контекста}
-	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ
-	\par Каждое значение усреднено по 100 измерениям. 
-	\par Для измерения используется только одно ядро ЦП.
-	\begin{table}[H]
-		%\caption{Число переключений корутин}\label{inc-matrix}
-		\textit{\begin{tabular}{|c|c|c|c|c|c|}
-				\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Число переключений, тыс./сек.}   \\
-				\cline{2-3}    		   		& getcontext/setcontext    &  Новые функции             \\
-				\hline 100     		   		& \numprint{1956} $\pm$ 38 & \numprint{12980} $\pm$ 540 \\
-				\hline \numprint{1000} 		& \numprint{1829} $\pm$ 12 & \numprint{11420} $\pm$ 694 \\
-				\hline \numprint{5000} 		& \numprint{1578} $\pm$ 39 & \phantom{0}\numprint{5875} $\pm$ 183  \\
-				\hline \numprint{10000}		& \numprint{1316} $\pm$ 20 & \phantom{0}\numprint{4459} $\pm$ 162  \\ 
-				\hline \numprint{20000}		& 1226 $\pm$ 8\phantom{0}  & \numprint{3604} $\pm$ 93   \\ 
-				\hline \numprint{30000}		& 1068 $\pm$ 7\phantom{0}  & \numprint{3031} $\pm$ 94   \\ 
-				\hline \numprint{40000}		& 928 $\pm$ 7    		   & \numprint{2653} $\pm$ 87   \\ 
-				\hline \numprint{50000}		& 881 $\pm$ 5    		   & \numprint{2315} $\pm$ 60   \\ 
-				\hline 
-			\end{tabular}
-		}
-	\end{table}
 \end{frame}
 
 \begin{frame}{Измерение скорости переключения сопрограмм в управляемых средах}
@@ -212,12 +146,11 @@
 				\hline \numprint{20000}  & \numprint{3604} $\pm$ 93              & \phantom{0}753   $\pm$ 28              \\ 
 				\hline \numprint{30000}  & \numprint{3031} $\pm$ 94              & \phantom{0}556   $\pm$ 16              \\ 
 				\hline \numprint{40000}  & \numprint{2653} $\pm$ 87              & \phantom{0}436   $\pm$ 12              \\ 
-				\hline \numprint{50000}  & \numprint{2315} $\pm$ 60              & 		361   $\pm$ 8               \\ 
+				\hline \numprint{50000}  & \numprint{2315} $\pm$ 60              & 		      361   $\pm$ 8               \\ 
 				\hline 
 			\end{tabular}
 		}
 	\end{table}
-	
 \end{frame}
 
 \begin{frame}{Измерение потребление памяти сопрограмм в управляемых средах}
@@ -226,7 +159,7 @@
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
 			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Резидентная память}  \\
 			\cline{2-4}    & HuaweiJDK   & OpenJDK/"Loom"    & Go        \\
-			\hline 100     & 18 Mб       & 130 Mб    		 & 3,040  Mб \\
+			\hline 100     & 18 Mб       & 130 Mб    		 & 3,040 Mб  \\
 			\hline 1000    & 22 Mб       & 161 Mб     		 & 3,105 Mб  \\
 			\hline 5000    & 32 Mб       & 187 Mб    		 & 3,156 Mб  \\
 			\hline 10000   & 37 Mб       & 193 Mб     		 & 3,308 Mб  \\
@@ -259,6 +192,13 @@
 	\end{table}
 \end{frame}
 
+\begin{frame}{Ключевые отличия от потоков ОС}
+	\begin{itemize}
+		\item Переключение контекста сопрограммы требует меньше накладных расходов, чем переключение потока.
+		\item Как правило меньший размер стека, а значит, потребление памяти так же меньше.
+	\end{itemize}
+\end{frame}
+
 \begin{frame}{План дальнейших работ} 
 	\begin{itemize}
 		\item Поддержка synchronized блоков.
@@ -269,10 +209,9 @@
 \begin{frame}{Результаты}
 	\begin{itemize}
 		\item Создан набор тестов для сравнения производительности потоков и сопрограмм.
-		\item Реализовано переключение контекста сопрограмм.
-		\item Разработана трассировка ссылок объектов на стеках сопрограмм.
-		\item Оптимизировано переключение контекста сопрограмм более чем в 3 раза.
+		\item Реализован базовый прототип сопрограмм на базе HuaweiJDK.
 		\item Проведен анализ результатов тестов производительности.
+		\item Выявлены ключевые отличия сопрограмм от потоков.
 	\end{itemize}
 \end{frame}
 
