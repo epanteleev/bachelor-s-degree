@@ -1,7 +1,6 @@
 %%% Преамбула %%%
 
 \usepackage{fontspec} % XeTeX
-\usepackage{xunicode} % Unicode для XeTeX
 \usepackage{xltxtra}  % Верхние и нижние индексы
 \usepackage{pdfpages} % Вставка PDF
 
@@ -13,7 +12,7 @@
     literate={--}{{-{}-}}2 % Корректно отображать двойной дефис
 }
 
-% Шрифты, xelatex
+% Шрифты
 \defaultfontfeatures{Ligatures=TeX}
 \setmainfont{Times New Roman} % Нормоконтроллеры хотят именно его
 \newfontfamily\cyrillicfont{Times New Roman}
@@ -94,11 +93,11 @@
 \renewcommand\cftsecpagefont{\mdseries}             % Номера страниц не жирные
 \setcounter{tocdepth}{3}                            % Глубина оглавления, до subsubsection
 
-% Нумерация страниц справа сверху
+% Нумерация страниц
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[R]{\textrm{\thepage}}
+\fancyfoot[R]{\textrm{\thepage}}
 \fancyheadoffset{0mm}
 \fancyfootoffset{0mm}
 \setlength{\headheight}{17pt}
@@ -106,7 +105,7 @@
 \renewcommand{\footrulewidth}{0pt}
 \fancypagestyle{plain}{ 
     \fancyhf{}
-    \rhead{\thepage}
+    \rfoot{\thepage}
 }
 
 % Формат подрисуночных надписей
@@ -167,7 +166,7 @@
 
 % Оформление заголовков
 \usepackage[compact,explicit]{titlesec}
-\titleformat{\section}{}{}{12.5mm}{\centering{\thesection\quad\MakeTextUppercase{#1}}\vspace{1.5em}}
+\titleformat{\section}{}{}{12.5mm}{\centering{\thesection\quad\MakeTextUppercase{#1}}\vspace{1em}}
 \titleformat{\subsection}[block]{\vspace{1em}}{}{12.5mm}{\thesubsection\quad#1\vspace{1em}}
 \titleformat{\subsubsection}[block]{\vspace{1em}\normalsize}{}{12.5mm}{\thesubsubsection\quad#1\vspace{1em}}
 \titleformat{\paragraph}[block]{\normalsize}{}{12.5mm}{\MakeTextUppercase{#1}}
