@@ -88,6 +88,7 @@
 % Содержание
 \usepackage{tocloft}
 \renewcommand{\cfttoctitlefont}{\hspace{0.38\textwidth}\MakeTextUppercase} % СОДЕРЖАНИЕ
+
 \renewcommand{\cftsecfont}{\hspace{0pt}}            % Имена секций в содержании не жирным шрифтом
 \renewcommand\cftsecleader{\cftdotfill{\cftdotsep}} % Точки для секций в содержании
 \renewcommand\cftsecpagefont{\mdseries}             % Номера страниц не жирные
@@ -97,13 +98,13 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[R]{\textrm{\thepage}}
+\fancyhead[C]{\textrm{\thepage}}
 \fancyheadoffset{0mm}
 \fancyfootoffset{0mm}
 \setlength{\headheight}{17pt}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
-\fancypagestyle{plain}{ 
+\fancypagestyle{empty} { 
     \fancyhf{}
     \rfoot{\thepage}
 }
@@ -202,4 +203,3 @@
     }
 \makeatother
 
-\setcounter{page}{1} % Начало нумерации страниц
