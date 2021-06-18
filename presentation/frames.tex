@@ -5,12 +5,29 @@
 \end{frame}
 }
 
-\begin{frame}{Параллелизм}
+\begin{frame}{Параллельная обработка данных}
 	В мире существует множество задач, требующих параллельной обработки данных:
 	\begin{itemize}
-		\item Вычислительные задачи, вроде операций с матрицами.
+		\item Параллельные вычисления. Например, библиотека Colt Parallel, используемая CERN для математических расчетов.
 		\item Системы сбора и обработки данных.
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Система обработки и сбора данных}
+	\begin{figure}
+		\includegraphics[width=0.9\linewidth]{images/system.png}
+	\end{figure}
+	\begin{itemize}
+		\item Для ускорения работы со множеством каналов связи необходим параллелизм.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Язык Java}
+	\begin{enumerate}
+		\item Допустимо применение языка Java в системах мягкого реального времени.
+		\item Java упрощает написание кода благодаря автоматическому управлению памятью 
+		и контролю ошибок при исполнении. 
+\end{enumerate}
 \end{frame}
 
 \begin{frame}{Параллелизм}
@@ -24,42 +41,11 @@
 
 \begin{frame}{Сопрограммы}
 	\begin{itemize}
-		\item \textbf{Сопрограмма} (англ. coroutine) - программный модуль, организованный для обеспечения взаимодействия с другими модулями по принципу кооперативной многозадачности.
+		\item \textbf{Сопрограмма} (англ. coroutine) - программный модуль, который работает 
+		\textit{конкурентно} с другими такими модулями. При использовании сопрограммы ведут себя как обычные потоки.
 		
-		\item Сопрограммы способны приостанавливать свое выполнение, сохраняя
-		\textit{контекст} (программный стек и регистры), и передавать управление другой.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Реализация в языках программирования}
-	\begin{figure}
-	\centering
-	\hfill
-	\begin{subfigure}[b]{0.22\linewidth}
-		\includegraphics[width=\linewidth]{images/cpp.png}
-		\caption{С++20}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.25\linewidth}
-		\includegraphics[width=\linewidth]{images/csharp.jpg} 
-		\caption{С\#}
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.27\linewidth}
-		\includegraphics[width=\linewidth]{images/go.jpg}
-		\caption{Go}
-	\end{subfigure}
-	
-	\end{figure}
-	\par
-	В языке Java сопрограммы не реализованы.
-\end{frame}
-
-\begin{frame}
-	\includegraphics[scale=0.4]{images/loom.jpg}
-	\begin{itemize}
-		\item Project Loom – проект на базе OpenJDK, целью которого является разработка сопрограмм для языка Java. 
-		\item На данный момент уже доступна ранняя версия проекта.
+		\item Сопрограммы уже реализованы в языках программирования С++20, C\#, Go.
+		\item Модуль сопрограмм в Java находится в стадии работающего прототипа (OpenJDK/Loom)
 	\end{itemize}
 \end{frame}
 
@@ -87,23 +73,17 @@
 	Репозиторий с тестами: https://github.com/minium2/coroutines-benchmark
 \end{frame}
 
-\begin{frame}{Переключение сопрограмм}
-	\begin{figure}
-		\includegraphics[scale=0.5]{images/scheme.jpg}
-	\end{figure}
-	\par
-	\begin{itemize}
-		\item Функция yeild() переключает управление от одной сопрограммы другой.
-		\item Завершение выполнения сопрограммы приводит к переключению на другую.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Подходы к реализации переключения сопрограмм}
+\begin{frame}{Реализация прототипа сопрограмм}
+	Для работы минимального прототипа требуется:
+	\begin{enumerate}
+		\item Переключение контекста сопрограмм.
+		\item Сборка мусора.
+	\end{enumerate}
+	Переключение сопрограмм может быть реализовано различными способами:
 	\begin{itemize}
 		\item OpenJDK/Loom: копирование стека сопрограммы при переключении.
 		\item Go: изменение указателя стека.
 	\end{itemize}
-
 	В HuaweiJDK выбран подход языка Go, поскольку он более эффективен.
 \end{frame}
 
@@ -156,36 +136,16 @@
 	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ
 	\begin{table}[H]
 		\textit{\begin{tabular}{|c|c|c|c|c|c|}
-			\hline \multirow{2}{*}{Шт.} & \multicolumn{3}{|c|}{Резидентная память}  \\
-			\cline{2-4}    & HuaweiJDK   & OpenJDK/"Loom"    & Go        \\
-			\hline 100     & 18 Mб       & 130 Mб    		 & 3,040 Mб  \\
-			\hline 1000    & 22 Mб       & 161 Mб     		 & 3,105 Mб  \\
-			\hline 5000    & 32 Mб       & 187 Mб    		 & 3,156 Mб  \\
-			\hline 10000   & 37 Mб       & 193 Mб     		 & 3,308 Mб  \\
-			\hline 20000   & 45 Mб       & 196 Mб     		 & 3,320 Mб  \\
-			\hline 30000   & 49 Mб       & 197 Mб     		 & 3,350 Mб  \\
-			\hline 40000   & 51 Mб       & 200 Mб    		 & 3,390 Mб  \\
-			\hline 50000   & 57 Mб       & 202 Mб    		 & 3,407 Mб  \\ 
-			\hline 
-		\end{tabular}}
-	\end{table}
-\end{frame}
-
-\begin{frame}{Измерение потребления памяти потоков}
-	Ubuntu, kernel 4.15, Intel Core i7-8700, 4.6 ГГц, 32 Гб ОЗУ, HuaweiJDK
-	\begin{table}[H]
-		%\caption{Число переключений корутин}\label{inc-matrix}
-		\textit{\begin{tabular}{|c|c|c|c|c|c|}
-			\hline \multirow{2}{*}{Шт.} & \multicolumn{2}{|c|}{Размер физической памяти}  \\
-			\cline{2-3}    & Сопрограммы   & Потоки    \\
-			\hline 100     & 18 Mб         & 34 Mб     \\
-			\hline 1000    & 22 Mб         & 35 Mб     \\
-			\hline 5000    & 32 Mб         & 37 Mб     \\
-			\hline 10000   & 37 Mб         & 40 Mб     \\
-			\hline 20000   & 45 Mб         & 49 Mб     \\
-			\hline 30000   & 49 Mб         & 56 Mб     \\
-			\hline 40000   & 51 Mб         & 63 Mб     \\
-			\hline 50000   & 57 Mб         & 72 Mб     \\ 
+			\hline \multirow{2}{*}{Шт.} & \multicolumn{4}{|c|}{Резидентная память}  \\
+			\cline{2-5}    & HuaweiJDK   & OpenJDK/"Loom"    & Go       & Потоки \\
+			\hline 100     & 18 Mб       & 130 Mб    		 & 3,040 Mб & 34 Mб \\
+			\hline 1000    & 22 Mб       & 161 Mб     		 & 3,105 Mб & 35 Mб \\
+			\hline 5000    & 32 Mб       & 187 Mб    		 & 3,156 Mб & 37 Mб \\
+			\hline 10000   & 37 Mб       & 193 Mб     		 & 3,308 Mб & 40 Mб \\
+			\hline 20000   & 45 Mб       & 196 Mб     		 & 3,320 Mб & 49 Mб \\
+			\hline 30000   & 49 Mб       & 197 Mб     		 & 3,350 Mб & 56 Mб \\
+			\hline 40000   & 51 Mб       & 200 Mб    		 & 3,390 Mб & 63 Mб \\
+			\hline 50000   & 57 Mб       & 202 Mб    		 & 3,407 Mб & 72 Mб \\ 
 			\hline 
 		\end{tabular}}
 	\end{table}
@@ -197,14 +157,14 @@
 	\begin{table}[H]
 		Время перемножения матриц 6000x7000
 		\begin{tabular}{|c|c|} 
-			\hline Потоки              & Сопрограммы           \\
-			\hline 45.6 $\pm$ 1.8 сек.   & 24.0 $\pm$ 5.6 сек. \\ 
+			\hline Потоки              & Сопрограммы         \\
+			\hline 45.6 $\pm$ 1.8 сек. & 24.0 $\pm$ 5.6 сек. \\ 
 			\hline
 		\end{tabular}
 	\end{table}
 	\begin{table}[H]
 		Время вычисления дискретного преобразования Фурье.
-		\begin{tabular}{ |c|c| } 
+		\begin{tabular}{|c|c|} 
 			\hline Потоки                 & Сопрограммы         \\
 			\hline 77.2 $\pm$ 0.3 мсек.   & 77.4 $\pm$ 0.4 мсек.\\ 
 			\hline
